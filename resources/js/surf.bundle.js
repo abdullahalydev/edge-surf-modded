@@ -542,8 +542,8 @@
               },
               gates: 0,
               coins: 0,
-              finish: !1,
-              friend: !1,
+              finish: !!1,
+              friend: !!1,
               caught: !1,
               highScore: !1,
               cheat: {
@@ -2822,6 +2822,28 @@
                 break;
               case "share":
                 this.notifyContent.textContent = Z.pz.getString("share");
+                break;
+              case "infinityAir":
+                this.notifyContent.textContent = Z.pz.getString("infinityAir");
+                break;
+              case "infinityLives":
+                this.notifyContent.textContent =
+                  Z.pz.getString("infinityLives");
+                break;
+              case "infinityShields":
+                this.notifyContent.textContent =
+                  Z.pz.getString("infinityShields");
+                break;
+              case "infinityBoost":
+                this.notifyContent.textContent =
+                  Z.pz.getString("infinityBoost");
+                break;
+              case "speed":
+                this.notifyContent.textContent = Z.pz.getString("speed");
+                break;
+              case "godmode":
+                this.notifyContent.textContent = Z.pz.getString("godmode");
+                break;
             }
             clearTimeout(this.notifyTimer),
               (this.notifyTimer = window.setTimeout(function () {
@@ -8613,6 +8635,25 @@
                   break;
                 case He.Boost:
                   this.boost();
+                  break;
+                case He.infinityAir:
+                  this.inject("infinityAir");
+                  break;
+                case He.infinityLives:
+                  this.inject("infinityLives");
+                  break;
+                case He.infinityShields:
+                  this.inject("infinityShields");
+                  break;
+                case He.infinityBoost:
+                  this.inject("infinityBoost");
+                  break;
+                case He.speed:
+                  this.inject("speed");
+                  break;
+                case He.godmode:
+                  this.inject("godmode");
+                  break;
               }
           }
           changeDirection(e, t = !1) {
@@ -8677,6 +8718,46 @@
             const s = t.accel * e * te.sys.game.time.scale;
             (this.speed.raw = t.raw <= t.max ? (t.raw += s) : (t.raw -= s)),
               (this.speed.current = t.raw * te.sys.game.time.scale);
+          }
+          inject(action) {
+            if (action === "infinityLives") {
+              te.sys.game.lives.current = Infinity;
+              ue.sys.refreshDisplay();
+              ue.sys.sendNotification("infinityLives");
+            }
+            if (action === "infinityShields") {
+              te.sys.game.shields.current = Infinity;
+              ue.sys.refreshDisplay();
+              ue.sys.sendNotification("infinityShields");
+            }
+            if (action === "infinityBoost") {
+              te.sys.game.boosts.current = Infinity;
+              ue.sys.refreshDisplay();
+              ue.sys.sendNotification("infinityBoost");
+            }
+            if (action === "infinityAir") {
+              this.air(Infinity);
+              ue.sys.sendNotification("infinityAir");
+            }
+            if (action === "speed") {
+              this.speed.min = 20;
+              this.speed.max = 30;
+              ue.sys.sendNotification("speed");
+            }
+            if (action === "godmode") {
+              this.lose = () => null;
+              this.crash = () => null;
+              this.slow = () => null;
+              this.bounce = () => null;
+              this.spin = () => null;
+              this.failGate = (e) => this.passGate(e);
+
+              this.hitbox.x = 0;
+              this.hitbox.y = 0;
+              this.hitbox.w = 0;
+              this.hitbox.h = 0;
+              ue.sys.sendNotification("godmode");
+            }
           }
           stop() {
             this.changeDirection("stop"),
@@ -9020,13 +9101,31 @@
                 case "w":
                   Ae.sys.routeInput(He.Stop);
                   break;
-                case "enter":
                 case " ":
                   Ae.sys.routeInput(He.Toggle);
+                  break;
+                case "1":
+                  Ae.sys.routeInput(He.infinityAir);
+                  break;
+                case "2":
+                  Ae.sys.routeInput(He.infinityLives);
+                  break;
+                case "3":
+                  Ae.sys.routeInput(He.infinityShields);
+                  break;
+                case "4":
+                  Ae.sys.routeInput(He.infinityBoost);
+                  break;
+                case "5":
+                  Ae.sys.routeInput(He.speed);
+                  break;
+                case "6":
+                  Ae.sys.routeInput(He.godmode);
                   break;
                 case "escape":
                   Ae.sys.routeInput(He.Settings, !1, !1);
                   break;
+                case "enter":
                 case "f":
                   Ae.sys.routeInput(He.Boost, !1, !1);
               }
@@ -9211,6 +9310,12 @@
               (e.DownRight = "downright"),
               (e.Boost = "boost"),
               (e.Toggle = "toggle"),
+              (e.infinityAir = "infinityAir"),
+              (e.infinityLives = "infinityLives"),
+              (e.infinityShields = "infinityShields"),
+              (e.infinityBoost = "infinityBoost"),
+              (e.speed = "speed"),
+              (e.godmode = "godmode"),
               (e.Reset = "reset");
           })(He || (He = {}));
         class Ae {
@@ -10879,7 +10984,7 @@
                   zigzag_bestScore: e.zigzag_bestScore,
                   endless_bestScore: e.endless_bestScore,
                   highVisibilityMode: e.highVisibilityMode,
-                  currentCharacter: e.currentCharacter,
+                  currentCharacter: 8, // alway open with full characters
                   mode: e.mode,
                   timetrial_bestScore:
                     e.timetrial_bestScore < 0
