@@ -1,4 +1,4 @@
-# edge-surf-moded
+# edge-surf-modded
 The *Let's Surf* game from ``edge://surf``
 
 ![banner](https://i.imgur.com/J94CKv0.png)
