@@ -7,6 +7,7 @@ The game is created by Microsoft – please see the **Credits** in the game menu
 
 ## Features
 - GODMODE
+- all characters
 - infinity air (fly)
 - infinity lives
 - infinity shields
